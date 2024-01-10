@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+package mailer;
+
+message SendMailRequest {
+  int32 message = 1;
+}

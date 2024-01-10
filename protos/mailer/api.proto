@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package mailer;
+
+import "mailer.request.proto";
+import "mailer.reply.proto";
+
+service MailerService {
+  rpc SendMail (SendMailRequest) returns (SendMailReply) {}
+}
+

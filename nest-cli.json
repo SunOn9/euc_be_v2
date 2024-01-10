@@ -3,6 +3,8 @@
   "collection": "@nestjs/schematics",
   "sourceRoot": "apps/euc_be_v2/src",
   "compilerOptions": {
+    "assets": ["**/*.proto"],
+    "watchAssets": true,
     "deleteOutDir": true,
     "webpack": true,
     "tsConfigPath": "apps/euc_be_v2/tsconfig.app.json"
@@ -26,6 +28,24 @@
       "sourceRoot": "apps/mailer/src",
       "compilerOptions": {
         "tsConfigPath": "apps/mailer/tsconfig.app.json"
+      }
+    },
+    "profile": {
+      "type": "application",
+      "root": "apps/profile",
+      "entryFile": "main",
+      "sourceRoot": "apps/profile/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/profile/tsconfig.app.json"
+      }
+    },
+    "utils": {
+      "type": "library",
+      "root": "libs/utils",
+      "entryFile": "index",
+      "sourceRoot": "libs/utils/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/utils/tsconfig.lib.json"
       }
     }
   }

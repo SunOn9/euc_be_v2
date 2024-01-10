@@ -1,39 +1,40 @@
 import { NestFactory } from '@nestjs/core';
-import { MailerModule } from './mailer.module';
+import { ProfileModule } from './profile.module';
 import { join } from 'path';
 import { ValidationPipe } from '@nestjs/common';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { CustomRpcExceptionFilter } from 'apps/exception.filter';
 
 async function bootstrap() {
-  const mailerApp = await NestFactory.createMicroservice<MicroserviceOptions>(
-    MailerModule,
+  const profileApp = await NestFactory.createMicroservice<MicroserviceOptions>(
+    ProfileModule,
     {
       transport: Transport.GRPC,
       options: {
-        url: process.env['GRPC_URL_MAILER'],
-        package: ['mailer'],
+        url: process.env['GRPC_URL_PROFILE'],
+        package: ['profile'],
         loader: {
           longs: String,
           enums: String,
           json: true,
           defaults: true,
         },
-        protoPath: [join(__dirname, '../../../protos/mailer/api.proto')],
+        protoPath: [join(__dirname, '../../protos/profile/api.proto')],
       },
-      logger: ['error', 'warn', 'debug', 'verbose'],
     },
   );
 
-  mailerApp.useGlobalPipes(
+  profileApp.useGlobalPipes(
     new ValidationPipe({ whitelist: true, transform: true }),
   );
 
-  mailerApp.useGlobalFilters(new CustomRpcExceptionFilter());
+  profileApp.useGlobalFilters(new CustomRpcExceptionFilter());
 
-  await mailerApp.listen();
+  await profileApp.listen();
 
-  console.debug(`GRPC MAILER is running on: ${process.env['GRPC_URL_MAILER']}`);
+  console.debug(
+    `GRPC PROFILE is running on: ${process.env['GRPC_URL_PROFILE']}`,
+  );
 }
 
 bootstrap();
