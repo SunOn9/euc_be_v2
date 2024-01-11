@@ -2,16 +2,14 @@ import { Module } from '@nestjs/common';
 import { MailerController } from './mailer.controller';
 import { MailerService } from './mailer.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { BullModule } from '@nestjs/bull';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import * as dotenv from 'dotenv';
-import { CacheModule } from '@nestjs/cache-manager';
-import * as redisStore from 'cache-manager-redis-store';
+import { MailerModule } from '@nestjs-modules/mailer';
+import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 
 dotenv.config();
 const cwd = process.cwd();
-// const synchronizeDatabaseStructure = process.env.APP_ENV == 'dev';
 
 @Module({
   imports: [
@@ -29,30 +27,32 @@ const cwd = process.cwd();
       isGlobal: true,
       expandVariables: true,
     }),
-    BullModule.forRootAsync({
+    MailerModule.forRootAsync({
       imports: [ConfigModule],
-      useFactory: async (configService: ConfigService) => ({
-        redis: {
-          host: configService.get('REDIS_HOST'),
-          port: configService.get('REDIS_PORT'),
+      useFactory: (configService: ConfigService) => ({
+        transport: {
+          host: 'localhost',
+          secure: false,
+          auth: {
+            user: configService.get<string>('EMAIL'),
+            pass: configService.get<string>('EMAIL_APP_PASS'),
+          },
+        },
+        defaults: {
+          from: '"No Reply" <euc@noreply.com>',
+        },
+        template: {
+          dir: join(__dirname, 'templates'),
+          adapter: new HandlebarsAdapter(),
+          options: {
+            strict: true,
+          },
         },
       }),
-      inject: [ConfigService],
-    }),
-    CacheModule.registerAsync({
-      imports: [ConfigModule],
-      useFactory: async (configService: ConfigService) => ({
-        store: redisStore,
-        ttl: configService.get('REDIS_CACHE_TTL'),
-        host: configService.get('REDIS_HOST'),
-        port: configService.get('REDIS_PORT'),
-        isGlobal: true,
-      }),
-      isGlobal: true,
       inject: [ConfigService],
     }),
   ],
   controllers: [MailerController],
   providers: [MailerService],
 })
-export class MailerModule {}
+export class MailModule {}
