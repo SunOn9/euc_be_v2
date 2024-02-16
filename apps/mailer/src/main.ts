@@ -1,5 +1,5 @@
 import { NestFactory } from '@nestjs/core';
-import { MailerModule } from './mailer.module';
+import { MailModule } from './mailer.module';
 import { join } from 'path';
 import { ValidationPipe } from '@nestjs/common';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
@@ -7,7 +7,7 @@ import { CustomRpcExceptionFilter } from 'apps/exception.filter';
 
 async function bootstrap() {
   const mailerApp = await NestFactory.createMicroservice<MicroserviceOptions>(
-    MailerModule,
+    MailModule,
     {
       transport: Transport.GRPC,
       options: {

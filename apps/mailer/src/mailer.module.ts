@@ -7,6 +7,8 @@ import { join } from 'path';
 import * as dotenv from 'dotenv';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
+import { BullModule } from '@nestjs/bull';
+import { RedisModule, RedisModuleOptions } from '@liaoliaots/nestjs-redis';
 
 dotenv.config();
 const cwd = process.cwd();
@@ -50,6 +52,31 @@ const cwd = process.cwd();
         },
       }),
       inject: [ConfigService],
+    }),
+    BullModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => ({
+        redis: {
+          host: configService.get('REDIS_HOST'),
+          port: configService.get('REDIS_PORT'),
+        },
+      }),
+      inject: [ConfigService],
+    }),
+    RedisModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: async (
+        configService: ConfigService,
+      ): Promise<RedisModuleOptions> => {
+        // await somePromise();
+        return {
+          config: {
+            host: configService.get('REDIS_HOST'),
+            port: configService.get('REDIS_PORT'),
+          },
+        };
+      },
     }),
   ],
   controllers: [MailerController],

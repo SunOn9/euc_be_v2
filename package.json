@@ -17,6 +17,7 @@
   "dependencies": {
     "@grpc/grpc-js": "^1.9.13",
     "@grpc/proto-loader": "^0.7.10",
+    "@liaoliaots/nestjs-redis": "^9.0.5",
     "@nestjs-modules/mailer": "^1.10.3",
     "@nestjs/bull": "^10.0.1",
     "@nestjs/cache-manager": "^2.2.0",
@@ -34,6 +35,7 @@
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
     "handlebars": "^4.7.8",
+    "ioredis": "^5.3.2",
     "neverthrow": "^6.1.0",
     "nodemailer": "^6.9.8",
     "reflect-metadata": "^0.1.13",
