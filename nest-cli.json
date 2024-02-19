@@ -2,11 +2,10 @@
   "$schema": "https://json.schemastore.org/nest-cli",
   "collection": "@nestjs/schematics",
   "compilerOptions": {
-    "assets": ["**/*.proto", "**/*.hbs"],
+    "assets": ["../protos/**/*.proto", "../data/templates/*.hbs"],
     "watchAssets": true
   },
   "monorepo": true,
-  "root": "apps",
   "projects": {
     "euc": {
       "type": "application",
