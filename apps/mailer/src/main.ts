@@ -1,9 +1,9 @@
-import { NestFactory } from '@nestjs/core';
-import { MailModule } from './mailer.module';
-import { join } from 'path';
-import { ValidationPipe } from '@nestjs/common';
-import { MicroserviceOptions, Transport } from '@nestjs/microservices';
-import { CustomRpcExceptionFilter } from 'apps/exception.filter';
+import { NestFactory } from '@nestjs/core'
+import { MailModule } from './mailer.module'
+import { join } from 'path'
+import { ValidationPipe } from '@nestjs/common'
+import { MicroserviceOptions, Transport } from '@nestjs/microservices'
+import { CustomRpcExceptionFilter } from 'apps/exception.filter'
 
 async function bootstrap() {
   const mailerApp = await NestFactory.createMicroservice<MicroserviceOptions>(
@@ -23,17 +23,17 @@ async function bootstrap() {
       },
       logger: ['error', 'warn', 'debug', 'verbose'],
     },
-  );
+  )
 
   mailerApp.useGlobalPipes(
     new ValidationPipe({ whitelist: true, transform: true }),
-  );
+  )
 
-  mailerApp.useGlobalFilters(new CustomRpcExceptionFilter());
+  mailerApp.useGlobalFilters(new CustomRpcExceptionFilter())
 
-  await mailerApp.listen();
+  await mailerApp.listen()
 
-  console.debug(`GRPC MAILER is running on: ${process.env['GRPC_URL_MAILER']}`);
+  console.debug(`GRPC MAILER is running on: ${process.env['GRPC_URL_MAILER']}`)
 }
 
-bootstrap();
+bootstrap()

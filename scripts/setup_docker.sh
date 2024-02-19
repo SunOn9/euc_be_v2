@@ -17,7 +17,7 @@ docker run -d --name euc-postgres -p 3307:3306 \
     postgres:14.10-alpine3.18
    
 
-docker run -d --name euc-redis -p 6378:6378 \
+docker run -d --name euc-redis -p 6378:6379 \
     redis:7.2.0
 
 docker run -d --name euc-elasticsearch -p 9201:9200 -p 9301:9300 \

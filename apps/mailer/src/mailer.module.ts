@@ -1,20 +1,22 @@
-import { Module } from '@nestjs/common';
-import { MailerController } from './mailer.controller';
-import { MailerService } from './mailer.service';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import { ServeStaticModule } from '@nestjs/serve-static';
-import { join } from 'path';
-import * as dotenv from 'dotenv';
-import { MailerModule } from '@nestjs-modules/mailer';
-import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
-import { BullModule } from '@nestjs/bull';
-import { RedisModule, RedisModuleOptions } from '@liaoliaots/nestjs-redis';
+import { Module } from '@nestjs/common'
+import { MailerController } from './mailer.controller'
+import { MailerService } from './mailer.service'
+import { ConfigModule, ConfigService } from '@nestjs/config'
+import { ServeStaticModule } from '@nestjs/serve-static'
+import { join } from 'path'
+import * as dotenv from 'dotenv'
+import { MailerModule } from '@nestjs-modules/mailer'
+import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter'
+import { BullModule } from '@nestjs/bull'
+import { RedisModule, RedisModuleOptions } from '@liaoliaots/nestjs-redis'
+import { MyRedisModule } from 'libs/core/components/redis/redis.module'
 
-dotenv.config();
-const cwd = process.cwd();
+dotenv.config()
+const cwd = process.cwd()
 
 @Module({
   imports: [
+    MyRedisModule,
     ServeStaticModule.forRoot({
       rootPath: join(cwd, 'uploads'),
       renderPath: '/uploads/*',
@@ -75,7 +77,7 @@ const cwd = process.cwd();
             host: configService.get('REDIS_HOST'),
             port: configService.get('REDIS_PORT'),
           },
-        };
+        }
       },
     }),
   ],
