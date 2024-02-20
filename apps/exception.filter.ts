@@ -24,17 +24,17 @@ export class HttpExceptionFilter implements ExceptionFilter {
   }
 }
 
-// catch all exception HTTP transfer to GRPC
-@Catch()
-export class CustomRpcExceptionFilter
-  implements RpcExceptionFilter<RpcException>
-{
-  catch(exception: RpcException): Observable<any> {
-    let errorCode: string;
-    if (exception instanceof HttpException) {
-      errorCode = JSON.stringify(exception.getResponse());
-    }
-    const response = JSON.parse(errorCode);
-    return of(response);
-  }
-}
+// // catch all exception HTTP transfer to GRPC
+// @Catch()
+// export class CustomRpcExceptionFilter
+//   implements RpcExceptionFilter<RpcException>
+// {
+//   catch(exception: RpcException): Observable<any> {
+//     let errorCode: string;
+//     if (exception instanceof HttpException) {
+//       errorCode = JSON.stringify(exception.getResponse());
+//     }
+//     const response = JSON.parse(errorCode);
+//     return of(response);
+//   }
+// }

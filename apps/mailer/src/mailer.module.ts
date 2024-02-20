@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common'
 import { MailerController } from './mailer.controller'
-import { MailerService } from './mailer.service'
+import { MyMailerService } from './mailer.service'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { ServeStaticModule } from '@nestjs/serve-static'
 import { join } from 'path'
@@ -35,7 +35,7 @@ const cwd = process.cwd()
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
         transport: {
-          host: 'localhost',
+          host: 'smtp.gmail.com',
           secure: false,
           auth: {
             user: configService.get<string>('EMAIL'),
@@ -46,7 +46,7 @@ const cwd = process.cwd()
           from: '"No Reply" <euc@noreply.com>',
         },
         template: {
-          dir: join(__dirname, 'templates'),
+          dir: join(__dirname, '../../../../../templates'),
           adapter: new HandlebarsAdapter(),
           options: {
             strict: true,
@@ -82,6 +82,6 @@ const cwd = process.cwd()
     }),
   ],
   controllers: [MailerController],
-  providers: [MailerService],
+  providers: [MyMailerService],
 })
 export class MailModule {}
